@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Ausentismo Escolar (PBA)</title>
+    <!-- Carga de Tailwind CSS para el diseño -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Configuración de fuente y scroll */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc; /* Fondo suave */
+        }
+        /* Estilo para el contenedor del gráfico de ejemplo */
+        .chart-container {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Se mantiene el borde dashed para los placeholders no implementados */
+        }
+        .chart-placeholder {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #cbd5e1;
+            background-color: #ffffff;
+            color: #475569;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Encabezado y Título Principal -->
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 border-b pb-2">
+            Dashboard de Ausentismo Escolar - Primaria PBA
+        </h1>
+        <p class="text-gray-500 mt-1">Análisis y monitoreo de las tasas de inasistencia en la Provincia de Buenos Aires.</p>
+    </header>
+
+    <!-- 1. Vista General (Panel de Control Principal) -->
+    <section id="vista-general" class="mb-10">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">A. Vista General - KPIs Clave</h2>
+        
+        <!-- Tarjetas de KPIs (Key Performance Indicators) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- KPI 1: Tasa de Ausentismo Promedio -->
+            <div class="bg-white p-5 rounded-xl shadow-lg border-l-4 border-indigo-500">
+                <p class="text-sm font-medium text-gray-500">Tasa de Ausentismo Promedio</p>
+                <div class="text-3xl font-bold text-gray-900 mt-1">4.5%</div>
+                <p class="text-sm mt-1">
+                    <span class="text-green-600 font-semibold">+0.3%</span> respecto al mes anterior
+                </p>
+            </div>
+
+            <!-- KPI 2: Ausentismo Crónico -->
+            <div class="bg-white p-5 rounded-xl shadow-lg border-l-4 border-red-500">
+                <p class="text-sm font-medium text-gray-500">Ausentismo Crónico (&ge;10%)</p>
+                <div class="text-3xl font-bold text-gray-900 mt-1">12.8%</div>
+                <p class="text-sm mt-1">
+                    <span class="text-red-600 font-semibold">-0.7%</span> respecto al ciclo anterior
+                </p>
+            </div>
+
+            <!-- KPI 3: Días Lectivos Perdidos (DLP) -->
+            <div class="bg-white p-5 rounded-xl shadow-lg border-l-4 border-yellow-500">
+                <p class="text-sm font-medium text-gray-500">Días Lectivos Perdidos (Acumulado)</p>
+                <div class="text-3xl font-bold text-gray-900 mt-1">1.2M</div>
+                <p class="text-sm mt-1">
+                    <span class="text-gray-600 font-semibold">180k</span> en el último mes
+                </p>
+            </div>
+
+             <!-- KPI 4: Tasa de Reincorporación -->
+            <div class="bg-white p-5 rounded-xl shadow-lg border-l-4 border-teal-500">
+                <p class="text-sm font-medium text-gray-500">Tasa de Reincorporación (Trimestral)</p>
+                <div class="text-3xl font-bold text-gray-900 mt-1">88%</div>
+                <p class="text-sm mt-1">
+                    <span class="text-green-600 font-semibold">Mejora</span> en 5 puntos
+                </p>
+            </div>
+        </div>
+
+        <!-- Gráfico de Tendencia -->
+        <div class="mt-6 bg-white p-6 rounded-xl shadow-lg">
+            <h3 class="text-lg font-semibold mb-3">Tendencia Mensual de Ausentismo (Gráfico de Líneas)</h3>
+            <div class="chart-container h-64">
+                <!-- CANVAS para Gráfico de Líneas -->
+                <canvas id="monthlyTrendChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Análisis Geográfico y Socioeconómico -->
+    <section id="analisis-geografico" class="mb-10">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">B. Análisis Geográfico y Correlación</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Columna Principal: Mapa Coroplético (2/3 de ancho en desktop) -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                <h3 class="text-lg font-semibold mb-3">Mapa de Ausentismo por Partido/Distrito</h3>
+                <div class="chart-placeholder h-96 bg-gray-50">
+                    [Placeholder para Mapa Coroplético: PBA - Tasa por Distrito (Requiere Librerías Geográficas)]
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Coloreado según Tasa de Ausentismo Promedio.</p>
+            </div>
+
+            <!-- Columna Lateral: Rankings y Filtros (1/3 de ancho en desktop) -->
+            <div class="lg:col-span-1 flex flex-col space-y-6">
+                
+                <!-- Tabla de Clasificación de Distritos -->
+                <div class="bg-white p-6 rounded-xl shadow-lg flex-grow">
+                    <h3 class="text-lg font-semibold mb-3">Ranking de Distritos (Top/Bottom 10)</h3>
+                    <div class="h-64 overflow-y-auto">
+                        <!-- Datos estáticos de ejemplo -->
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex justify-between p-2 rounded-lg bg-red-100 text-red-800 font-medium"><span>1. Lomas de Zamora</span> <span>8.1%</span></li>
+                            <li class="flex justify-between p-2 rounded-lg bg-red-100 text-red-800 font-medium"><span>2. La Matanza</span> <span>7.9%</span></li>
+                            <li class="flex justify-between p-2 rounded-lg bg-orange-100 text-orange-800 font-medium"><span>3. Merlo</span> <span>7.5%</span></li>
+                            <li class="flex justify-between p-2 rounded-lg bg-gray-100 text-gray-700 font-medium"><span>...</span> <span>...</span></li>
+                            <li class="flex justify-between p-2 rounded-lg bg-green-100 text-green-800 font-medium"><span>132. Viamonte</span> <span>2.8%</span></li>
+                            <li class="flex justify-between p-2 rounded-lg bg-green-100 text-green-800 font-medium"><span>133. Tres Lomas</span> <span>2.5%</span></li>
+                            <li class="flex justify-between p-2 rounded-lg bg-green-100 text-green-800 font-medium"><span>134. Adolfo Alsina</span> <span>2.1%</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Correlación Socioeconómica -->
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-semibold mb-3">Ausentismo vs. Vulnerabilidad (Dispersión)</h3>
+                    <div class="chart-placeholder h-40">
+                        [Placeholder para Gráfico de Dispersión (Requiere Data Contextual)]
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Factores y Tendencias -->
+    <section id="factores-tendencias">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">C. Factores y Análisis Detallado</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Gráfico 1: Ausentismo por Motivo (Doughnut Chart) -->
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <h3 class="text-lg font-semibold mb-3">Distribución por Motivo Principal</h3>
+                <div class="chart-container h-64">
+                    <canvas id="motiveDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico 2: Ausentismo Crónico por Grado (Bar Chart) -->
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <h3 class="text-lg font-semibold mb-3">Ausentismo Crónico por Grado (1º a 6º)</h3>
+                <div class="chart-container h-64">
+                    <canvas id="chronicByGradeChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico 3: Tipo de Gestión -->
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <h3 class="text-lg font-semibold mb-3">Comparación Estatal vs. Privada</h3>
+                <div class="chart-placeholder h-64">
+                    [Placeholder para Gráfico de Barras Apiladas (Requiere Data de Gestión)]
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CDNs de Librerías -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script type="module">
+        // Importaciones de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // =======================================================
+        // 1. CONFIGURACIÓN Y AUTENTICACIÓN DE FIREBASE
+        // =======================================================
+        
+        // Variables globales proporcionadas por el entorno de Canvas
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db = null;
+        let auth = null;
+        let userId = null;
+
+        async function initFirebase() {
+            try {
+                // Inicializar App
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                
+                // Configurar Firestore
+                db = getFirestore(app);
+                setLogLevel('Debug');
+
+                // Autenticar Usuario
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                userId = auth.currentUser?.uid || crypto.randomUUID();
+                console.log("Firebase inicializado. UserID:", userId);
+
+                // Una vez autenticado, renderizar los gráficos con datos (reales o simulados)
+                renderCharts();
+
+            } catch (error) {
+                console.error("Error al inicializar Firebase o autenticar:", error);
+                // Si falla la inicialización, intentar renderizar los gráficos de todas formas
+                renderCharts();
+            }
+        }
+        
+        // =======================================================
+        // 2. DATOS SIMULADOS (Mock Data)
+        // =======================================================
+
+        const mockData = {
+            monthlyTrend: [
+                { month: 'Mar', tasa: 4.0 },
+                { month: 'Abr', tasa: 4.5 },
+                { month: 'May', tasa: 4.8 },
+                { month: 'Jun', tasa: 5.2 },
+                { month: 'Jul', tasa: 4.9 },
+                { month: 'Ago', tasa: 5.5 },
+                { month: 'Sep', tasa: 5.1 },
+            ],
+            chronicByGrade: [
+                { grade: '1º', chronic: 15.2 },
+                { grade: '2º', chronic: 14.5 },
+                { grade: '3º', chronic: 12.8 },
+                { grade: '4º', chronic: 10.9 },
+                { grade: '5º', chronic: 9.8 },
+                { grade: '6º', chronic: 9.1 },
+            ],
+            motiveDistribution: [
+                { motive: 'Enfermedad', percentage: 45 },
+                { motive: 'Familiar/Personal', percentage: 25 },
+                { motive: 'Transporte/Clima', percentage: 15 },
+                { motive: 'No Reportado', percentage: 15 },
+            ],
+        };
+
+        // =======================================================
+        // 3. FUNCIONES DE RENDERING DE GRÁFICOS (Chart.js)
+        // =======================================================
+
+        function renderLineChart(data) {
+            const ctx = document.getElementById('monthlyTrendChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.month),
+                    datasets: [{
+                        label: 'Tasa de Ausentismo (%)',
+                        data: data.map(d => d.tasa),
+                        borderColor: '#4f46e5', // Indigo-600
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Ausentismo Promedio por Mes', font: { size: 14 } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Tasa (%)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderBarChart(data) {
+            const ctx = document.getElementById('chronicByGradeChart');
+            if (!ctx) return;
+            
+            // Colores por riesgo (más alto para 1º/2º)
+            const colors = [
+                '#dc2626', // Red-600 (Riesgo Alto)
+                '#f97316', // Orange-500
+                '#f59e0b', // Amber-500
+                '#10b981', // Green-500
+                '#06b6d4', // Cyan-500
+                '#3b82f6', // Blue-500 (Riesgo Bajo)
+            ];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.grade),
+                    datasets: [{
+                        label: 'Ausentismo Crónico (%)',
+                        data: data.map(d => d.chronic),
+                        backgroundColor: colors,
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Ausentismo Crónico por Grado', font: { size: 14 } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 20,
+                            title: { display: true, text: 'Porcentaje Crónico (%)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderDoughnutChart(data) {
+            const ctx = document.getElementById('motiveDistributionChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(d => d.motive),
+                    datasets: [{
+                        data: data.map(d => d.percentage),
+                        backgroundColor: [
+                            '#3b82f6', // Azul (Enfermedad)
+                            '#f59e0b', // Amarillo (Familiar)
+                            '#ef4444', // Rojo (Transporte/Clima)
+                            '#9ca3af', // Gris (No Reportado)
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' },
+                        title: { display: true, text: 'Distribución por Motivo (Simulado)', font: { size: 14 } }
+                    }
+                }
+            });
+        }
+
+        function renderCharts() {
+            renderLineChart(mockData.monthlyTrend);
+            renderBarChart(mockData.chronicByGrade);
+            renderDoughnutChart(mockData.motiveDistribution);
+        }
+
+        // =======================================================
+        // 4. INICIO DE LA APLICACIÓN
+        // =======================================================
+        window.onload = initFirebase;
+    </script>
+</body>
+</html>
